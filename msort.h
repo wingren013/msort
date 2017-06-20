@@ -12,6 +12,8 @@ typedef struct	msort_param_s
 	void		*sorts;
 	size_t		sortsize;
 	int			(*cmp) (const void *, const void *);
-}				msort_param_t;
+}		msort_param_t;
+
+void		msort(void *sorts, size_t count, size_t datasize);
 
 #endif

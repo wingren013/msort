@@ -155,19 +155,27 @@ void	*qmsort(void *params)
 	return (sorts);
 }
 
-void	msort(t_sortbod *sorts, size_t count, size_t datasize)
+void	msort(void *sort, size_t count, size_t datasize)
 {
 	size_t		pi;
 	size_t		i;
 	size_t		l;
-	t_sortbod	pivot;
 	size_t		end;
+	char		*sorts = (char*)sort;
 
+	//do sample of data
+	//if looks partially sorted dp timsort
+	/*
+	if (datasorted)
+	{
+		tmsort(sort, count, datasize);
+	}
+	*/
 	end = count - 1;
 	mphore = 0;
 	i = 0;
+	end = count - 1;
 	pi = (start + (end - start) / 2);
-	pivot = sorts[pi];
 	l = end;
 	while (i <= l)
 	{
