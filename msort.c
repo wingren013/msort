@@ -18,6 +18,12 @@ void	msort_swap(size_t size, char *a, size_t i, size_t l)
 	free(t);
 }
 
+void	*tmsort(void *sort, size_t count, size_t datasize)
+{
+	//timsort
+	return (sort);
+}
+
 void	bsort(msort_param_t params)
 {
 	size_t		pi;
@@ -155,7 +161,7 @@ void	*qmsort(void *params)
 	return (sorts);
 }
 
-void	msort(void *sort, size_t count, size_t datasize)
+void	*msort(void *sort, size_t count, size_t datasize)
 {
 	size_t		pi;
 	size_t		i;
@@ -185,7 +191,7 @@ void	msort(void *sort, size_t count, size_t datasize)
 			l--;
 		if (i >= l)
 			break ;
-		if (i == pi)
+		if (i == pi)void	msort(t_sortbod *sorts, size_t count, size_t datasize)
 			pi = l;
 		else if (l == pi)
 			pi = i;
@@ -227,5 +233,5 @@ void	msort(void *sort, size_t count, size_t datasize)
 		bsort(&param2);
 	}
 	
-	return ;
+	return (sort);
 }
