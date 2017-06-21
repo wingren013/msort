@@ -17,5 +17,8 @@ typedef struct	msort_param_s
 
 void		*msort(void *sorts, size_t count, size_t datasize, int (*cmp) (void *, void *));
 void		*tmsort(void *sorts, size_t count, size_t datasize, int (*cmp) (void *, void *));
+void		bsort(msort_param_t params);
+void		msort_swap(size_t size, char *a, size_t i, size_t l);
+void		*qmsort(void *params);
 
 #endif
