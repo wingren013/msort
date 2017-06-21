@@ -1,10 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
 #include "msort.h"
 
-#define I (sortsize * i)
-#define L (sortsize * l)
-#define PI (sortsize * pi)
+int g_size;
+int (*g_cmp) (void *, void *);
+
+#define I (g_size * i)
+#define L (g_size * l)
+#define PI (g_size * pi)
 
 volatile int	mphore;
 
@@ -33,10 +37,10 @@ void	bsort(msort_param_t params)
 	size_t		sortsize = params.sortsize;
 	size_t		end = params.end;
 	size_t		start = params.start;
-	int (*cmp) (void *, void *) = params.cmp
+	int (*cmp) (void *, void *) = g_cmp;
 	
 	if (start >= end)
-		return (0);
+		return ;
 	i = start;
 	pi = (start + (end - start) / 2);
 	l = end;
@@ -59,14 +63,12 @@ void	bsort(msort_param_t params)
 	param1.start = start;
 	param1.end = l;
 	param1.sorts = sorts;
-	param1.cmp = cmp;
 	param1.sortsize = sortsize;
 	
 	msort_param_t	param2;
 	param2.start = (l + 1);
 	param2.end = end;
 	param2.sorts = sorts;
-	param2.cmp = cmp;
 	param2.sortsize = sortsize;
 	
 	if (mphore < 8 && l - start > THREAD_THRESHOLD)
@@ -101,7 +103,7 @@ void	*qmsort(void *params)
 	char		*sorts = (char*)(((msort_param_t*)params)->sorts);
 	size_t		end = ((msort_param_t*)params)->end;
 	size_t		start = ((msort_param_t*)params)->start;
-	int (*cmp) (void *, void *) = ((msort_param_t*)params)->cmp;
+	int (*cmp) (void *, void *) = g_cmp;
 
 	if (start >= end)
 		return (0);
@@ -127,14 +129,12 @@ void	*qmsort(void *params)
 	param1.start = start;
 	param1.end = l;
 	param1.sorts = sorts;
-	param1.cmp = cmp;
 	param1.sortsize = sortsize;
 	
 	msort_param_t	param2;
 	param2.start = (l + 1);
 	param2.end = end;
 	param2.sorts = sorts;
-	param2.cmp = cmp;
 	param2.sortsize = sortsize;
 	
 	if (mphore < 8 && l - start > THREAD_THRESHOLD)
@@ -145,7 +145,7 @@ void	*qmsort(void *params)
 	}
 	else
 	{
-		bsort(&param1);
+		bsort(param1);
 	}
 	if (mphore < 8 && end - l > THREAD_THRESHOLD)
 	{
@@ -155,7 +155,7 @@ void	*qmsort(void *params)
 	}
 	else
 	{
-		bsort(&param2);
+		bsort(param2);
 	}
 	mphore--;
 	return (sorts);
@@ -179,9 +179,11 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 	*/
 	end = count - 1;
 	mphore = 0;
+	g_size = datasize;
+	g_cmp = cmp;
 	i = 0;
 	end = count - 1;
-	pi = (start + (end - start) / 2);
+	pi = end / 2;
 	l = end;
 	while (i <= l)
 	{
@@ -195,24 +197,22 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 			pi = l;
 		else if (l == pi)
 			pi = i;
-		msort_swap(sortsize, sorts, i, l);
+		msort_swap(datasize, sorts, i, l);
 	}
 	
 	msort_param_t	param1;
-	param1.start = start;
+	param1.start = 0;
 	param1.end = l;
 	param1.sorts = sorts;
-	param1.cmp = cmp;
 	param1.sortsize = datasize;
 	
 	msort_param_t	param2;
 	param2.start = (l + 1);
 	param2.end = end;
 	param2.sorts = sorts;
-	param2.cmp = cmp;
 	param2.sortsize = datasize;
 	
-	if (mphore < 8 && l - start > THREAD_THRESHOLD)
+	if (mphore < 8 && l > THREAD_THRESHOLD)
 	{
 		mphore++;
 		pthread_t tid1;
@@ -220,7 +220,7 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 	}
 	else
 	{
-		bsort(&param1);
+		bsort(param1);
 	}
 	if (mphore < 8 && end - l > THREAD_THRESHOLD)
 	{
@@ -230,7 +230,7 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 	}
 	else
 	{
-		bsort(&param2);
+		bsort(param2);
 	}
 	
 	return (sort);
