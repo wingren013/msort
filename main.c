@@ -1,8 +1,9 @@
 #include "msort.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-int	cmp(void *a, void *b)
+int	mycmp(void *a, void *b)
 {
 	char *x = (char*)a;
 	char *y = (char*)b;
@@ -16,7 +17,18 @@ int	cmp(void *a, void *b)
 	return (0);
 }
 
-void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void *))
+void	msort_swap(size_t size, char *a, size_t i, size_t l)
+{
+	char *t = (char*)malloc(sizeof(char) * (size + 1));
+
+	printf("what\n");
+	memcpy(t, &a[i], size);
+	memcpy(&a[i], &a[l], size);
+	memcpy(&a[l], t, size);
+	free(t);
+}
+
+void	*testsort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void *))
 {
 	size_t		pi;
 	size_t		i;
@@ -33,41 +45,34 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 	}
 	*/
 	end = count - 1;
-	mphore = 0;
-	g_size = datasize;
-	g_cmp = cmp;
 	i = 0;
 	end = count - 1;
 	pi = end / 2;
 	l = end;
 	while (i <= l)
 	{
-		while (cmp(&sortsi * [i * datasize], &sorts[pi * datasize]) == -1)
-			i++;
+		while (cmp(&sorts[i * datasize], &sorts[pi * datasize]) == -1)
+			{
+				i++;
+				printf("debug]\n");
+			}
 		while (cmp(&sorts[l * datasize], &sorts[pi * datasize]) == 1)
-			l--;
+			{
+				l--;
+				printf("ok\n");
+			}
 		if (i >= l)
 			break ;
 		if (i == pi)
 			pi = l;
 		else if (l == pi)
 			pi = i;
+		printf("crash\n");
 		msort_swap(datasize, sorts, i * datasize, l * datasize);
+		printf("crash\n");
 	}
-	
-	msort_param_t	param1;
-	param1.start = 0;
-	param1.end = l;
-	param1.sorts = sorts;
-	param1.sortsize = datasize;
-	
-	msort_param_t	param2;
-	param2.start = (l + 1);
-	param2.end = end;
-	param2.sorts = sorts;
-	param2.sortsize = datasize;
-	msort(&sorts[l + 1]
-	
+	testsort(sorts, l + 1, datasize, cmp);
+	testsort(&sorts[l + 1], end + 1, datasize, cmp);
 	return (sort);
 }
 int	main(void)
@@ -88,8 +93,9 @@ int	main(void)
 		printf("%d\n", a[i]);
 		i++;
 	}
-	msort(a, 8, 1, cmp);
+	testsort(a, 8, 1, mycmp);
 	printf("____\n");
+	i = 0;
 	while (i < 8)
 	{
 		printf("%d\n", a[i]);
