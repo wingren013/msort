@@ -6,6 +6,9 @@
 
 #include <stdlib.h>
 
+extern volatile int mphore;
+extern int (*g_cmp) (void *, void *);
+
 typedef struct	msort_param_s
 {
 	size_t		start;

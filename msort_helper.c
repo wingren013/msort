@@ -1,3 +1,9 @@
+#include <stdlib.h>
+#include <string.h>
+#include <pthread.h>
+#include "msort.h"
+
+
 void	bsort(msort_param_t params)
 {
 	size_t		pi;
