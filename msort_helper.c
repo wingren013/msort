@@ -32,22 +32,22 @@ void	bsort(msort_param_t params)
 			pi = l;
 		else if (l == pi)
 			pi = i;
-		msort_swap(sortsize, sorts, i, l);
+		msort_swap(sortsize, sorts, i * sortsize, l * sortsize);
 	}
 	
 	msort_param_t	param1;
 	param1.start = start;
-	param1.end = l;
+	param1.end = l * sortsize;
 	param1.sorts = sorts;
 	param1.sortsize = sortsize;
 	
 	msort_param_t	param2;
-	param2.start = (l + 1);
+	param2.start = ((l * sortsize) + sortsize);
 	param2.end = end;
 	param2.sorts = sorts;
 	param2.sortsize = sortsize;
 	
-	if (mphore < 8 && l - start > THREAD_THRESHOLD)
+	if (mphore < 8 && (l * sortsize) - start > THREAD_THRESHOLD)
 	{
 		mphore++;
 		pthread_t tid1;;
@@ -57,7 +57,7 @@ void	bsort(msort_param_t params)
 	{
 		bsort(param1);
 	}
-	if (mphore < 8 && end - l > THREAD_THRESHOLD)
+	if (mphore < 8 && end - (l * sortsize) > THREAD_THRESHOLD)
 	{
 		mphore++;
 		pthread_t tid2;

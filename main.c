@@ -42,9 +42,9 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 	l = end;
 	while (i <= l)
 	{
-		while (cmp(&sorts[I], &sorts[PI]) == -1)
+		while (cmp(&sortsi * [i * datasize], &sorts[pi * datasize]) == -1)
 			i++;
-		while (cmp(&sorts[L], &sorts[PI]) == 1)
+		while (cmp(&sorts[l * datasize], &sorts[pi * datasize]) == 1)
 			l--;
 		if (i >= l)
 			break ;
@@ -52,7 +52,7 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 			pi = l;
 		else if (l == pi)
 			pi = i;
-		msort_swap(datasize, sorts, i, l);
+		msort_swap(datasize, sorts, i * datasize, l * datasize);
 	}
 	
 	msort_param_t	param1;
