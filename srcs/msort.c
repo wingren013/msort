@@ -120,7 +120,7 @@ void	*msort(void *sort, size_t count, size_t datasize, int (*cmp) (void *, void 
 	}
 	*/
 	end = count - 1;
-	sem_init(mphore, 0, 7);
+	sem_init(mphore, 0, MSORT_ALLOWEDTHREADS);
 	g_size = datasize;
 	g_cmp = cmp;
 	i = 0;

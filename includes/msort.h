@@ -3,6 +3,7 @@
 
 # define THREAD_THRESHOLD 10000
 # define SORTSWITCH_THRESH 100000
+# define MSORT_THREADC 8
 
 #include <stdlib.h>
 #include <semaphore.h>
@@ -25,5 +26,8 @@ void		bsort(msort_param_t params);
 void		msort_swap(size_t size, char *a, size_t i, size_t l);
 void		*qmsort(void *params);
 int			semval(sem_t *sem);
+
+//set number of allowed threads using the MSORT_THREADC macro
+# define MSORT_ALLOWEDTHREADS (MSORT_THREADC - 1)
 
 #endif
