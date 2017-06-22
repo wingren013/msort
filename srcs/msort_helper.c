@@ -47,9 +47,9 @@ void	bsort(msort_param_t params)
 	param2.sorts = sorts;
 	param2.sortsize = sortsize;
 	
-	if (mphore < 8 && (l * sortsize) - start > THREAD_THRESHOLD)
+	if (semval(mphore) > 0 && (l * sortsize) - start > THREAD_THRESHOLD)
 	{
-		mphore++;
+		sem_wait(mphore);
 		pthread_t tid1;;
 		pthread_create(&tid1, NULL, qmsort, &param1);
 	}
@@ -57,9 +57,9 @@ void	bsort(msort_param_t params)
 	{
 		bsort(param1);
 	}
-	if (mphore < 8 && end - (l * sortsize) > THREAD_THRESHOLD)
+	if (semval(mphore) > 0 && end - (l * sortsize) > THREAD_THRESHOLD)
 	{
-		mphore++;
+		sem_wait(mphore);
 		pthread_t tid2;
 		pthread_create(&tid2, NULL, qmsort, &param2);
 	}

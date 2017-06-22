@@ -5,8 +5,9 @@
 # define SORTSWITCH_THRESH 100000
 
 #include <stdlib.h>
+#include <semaphore.h>
 
-extern volatile int mphore;
+extern sem_t *mphore;
 extern int (*g_cmp) (void *, void *);
 
 typedef struct	msort_param_s
@@ -23,5 +24,6 @@ void		*tmsort(void *sorts, size_t count, size_t datasize, int (*cmp) (void *, vo
 void		bsort(msort_param_t params);
 void		msort_swap(size_t size, char *a, size_t i, size_t l);
 void		*qmsort(void *params);
+int			semval(sem_t *sem);
 
 #endif
